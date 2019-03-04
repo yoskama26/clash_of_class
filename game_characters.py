@@ -7,6 +7,9 @@ class Perso:
         self.current_life_point = self.max_life_point
         self.name = name
 
+    def __repr__(self):
+        return "{} the {}. ".format(self.name, self.__class__.__name__)
+
     def attack_gen(self):
         magic_d = random.randrange(1, self.magic)
         bow_d = random.randrange(1, self.bow)
@@ -48,6 +51,7 @@ class Wizard(Perso):
     def attack(self):
         return self.attack_gen()
 
+
     def defend(self, weapon, attack_point):
         self.defend_gen(weapon, attack_point)
 
@@ -66,7 +70,7 @@ class Archer(Perso):
 
 
 class Warrior(Perso):
-    max_life_point = 12
+    max_life_point = 16
     magic = 8
     bow = 10
     sword = 12
