@@ -16,28 +16,26 @@ class Perso:
         sword_d = random.randrange(1, self.sword)
         if magic_d >= bow_d and magic_d >= sword_d:
             arm = "magic"
-            return arm, magic_d
+            attack_point = magic_d
         elif bow_d >= magic_d and bow_d >= sword_d:
             arm = "bow"
-            return arm, bow_d
+            attack_point = bow_d
         elif sword_d >= magic_d and sword_d >= bow_d:
             arm = "sword"
-            return arm, sword_d
+            attack_point = sword_d
+        return arm, attack_point
 
-    def defend_gen(self, weapon, attack_point):
+    def defend(self, weapon, attack_point):
         if weapon == "magic":
-            self.magic = random.randrange(1, self.magic)
-            result = self.magic
+            result = random.randrange(1, self.magic)
             if result < attack_point:
                 self.current_life_point -= attack_point
         elif weapon == "bow":
-            self.bow = random.randrange(1, self.bow)
-            result = self.bow
+            result = random.randrange(1, self.bow)
             if result < attack_point:
                 self.current_life_point -= attack_point
         elif weapon == "sword":
-            self.sword = random.randrange(1, self.sword)
-            result = self.sword
+            result = random.randrange(1, self.sword)
             if result < attack_point:
                 self.current_life_point -= attack_point
 
@@ -49,11 +47,13 @@ class Wizard(Perso):
     sword = 8
 
     def attack(self):
-        return self.attack_gen()
-
-
-    def defend(self, weapon, attack_point):
-        self.defend_gen(weapon, attack_point)
+        arm_2, attack_2 = super(Wizard, self).attack_gen()
+        attack_1 = random.randrange(1, self.magic)
+        attack_point = max(attack_1, attack_2)
+        if attack_point == attack_1:
+            return "magic", attack_1
+        else:
+            return arm_2, attack_2
 
 
 class Archer(Perso):
@@ -63,10 +63,10 @@ class Archer(Perso):
     sword = 8
 
     def attack(self):
-        return self.attack_gen()
-
-    def defend(self, weapon, attack_point):
-        self.defend_gen(weapon, attack_point)
+        arm, attack_point = super(Archer, self).attack_gen()
+        if arm == "bow" or arm == "magic":
+            attack_point += 1
+        return arm, attack_point
 
 
 class Warrior(Perso):
@@ -76,21 +76,6 @@ class Warrior(Perso):
     sword = 12
 
     def attack(self):
-        return self.attack_gen()
-
-    def defend(self, weapon, attack_point):
-        self.defend_gen(weapon, attack_point)
+        return super(Warrior, self).attack_gen()
 
 
-gandalf = Wizard("gandalf")
-gimli = Warrior("gimli")
-
-arthur = Warrior("Arthur")
-merlin = Wizard("Merlin")
-
-
-#Attack 1 gandalf attack arthur:
-arm, points = gandalf.attack()
-print(gandalf, arm, points)
-arthur.defend(arm, points)
-print(arthur, arthur.current_life_point)
