@@ -10,7 +10,7 @@ class Perso:
     def __repr__(self):
         return "{} the {}. ".format(self.name, self.__class__.__name__)
 
-    def attack_gen(self):
+    def attack(self):
         magic_d = random.randrange(1, self.magic)
         bow_d = random.randrange(1, self.bow)
         sword_d = random.randrange(1, self.sword)
@@ -47,7 +47,7 @@ class Wizard(Perso):
     sword = 8
 
     def attack(self):
-        arm_2, attack_2 = super(Wizard, self).attack_gen()
+        arm_2, attack_2 = super(Wizard, self).attack()
         attack_1 = random.randrange(1, self.magic)
         attack_point = max(attack_1, attack_2)
         if attack_point == attack_1:
@@ -63,7 +63,7 @@ class Archer(Perso):
     sword = 8
 
     def attack(self):
-        arm, attack_point = super(Archer, self).attack_gen()
+        arm, attack_point = super(Archer, self).attack()
         if arm == "bow" or arm == "magic":
             attack_point += 1
         return arm, attack_point
@@ -75,7 +75,17 @@ class Warrior(Perso):
     bow = 10
     sword = 12
 
-    def attack(self):
-        return super(Warrior, self).attack_gen()
 
 
+# gandalf = Wizard("gandalf")
+# gimli = Warrior("gimli")
+#
+# arthur = Warrior("Arthur")
+# merlin = Wizard("Merlin")
+#
+#
+# #Attack 1 gandalf attack arthur:
+# arm, points = gandalf.attack()
+# print(gandalf, arm, points)
+# arthur.defend(arm, points)
+# print(arthur, arthur.current_life_point)
