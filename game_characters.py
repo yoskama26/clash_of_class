@@ -2,8 +2,10 @@ import random
 
 
 class Perso:
+    """classe generique"""
 
     def __init__(self, name):
+        """Initialise les bases des class"""
         self.current_life_point = self.max_life_point
         self.name = name
         self._height = random.randrange(170, 190)
@@ -30,6 +32,7 @@ class Perso:
     weight = property(_get_weight, _set_weight)
 
     def attack(self):
+        """Définie l'attaque génerique"""
         magic_d = random.randrange(1, self.magic)
         bow_d = random.randrange(1, self.bow)
         sword_d = random.randrange(1, self.sword)
@@ -44,7 +47,10 @@ class Perso:
             attack_point = sword_d
         return arm, attack_point
 
+
+
     def defend(self, weapon, attack_point):
+        """Définie la défence génerique"""
         if weapon == "magic":
             result = random.randrange(1, self.magic)
             if result < attack_point:
@@ -111,23 +117,46 @@ class Warrior(Perso):
             attack_points += (self.height - 170) % 3
         return arm, attack_points
 
+class Dwarf:
+    def bonus(self, arm, attack_points):
+        if arm == "sword":
+            attack_points += 2
+        return arm, attack_points
 
-legolas = Archer("legolas")
-gimli = Warrior("gimli")
-gandalf = Wizard("Gandalf")
-agg = gandalf.attack()
-print(agg)
+class Elf:
+    def bonus(self, arm, attack_points):
+        if arm == "bow":
+            attack_points += 2
+        return arm, attack_points
+
+class DwarfWizard(Wizard, Dwarf):
+    pass
+
+class ElfWizard(Wizard, Elf):
+    pass
+
+class DwarfArcher(Archer, Dwarf):
+    pass
+
+class ElfArcher(Archer, Elf):
+    pass
+
+class DwarfWarrior(Warrior, Dwarf):
+    pass
+
+class ElfWarrior(Warrior, Elf):
+    pass
 
 
-p = gimli.attack()
-print(p)
+legolas = ElfArcher("legolas")
+gimli = ElfWarrior("gimli")
+gandalf = ElfWizard("Gandalf")
 
-# arthur = Warrior("Arthur")
-# merlin = Wizard("Merlin")
-#
-#
-# #Attack 1 gandalf attack arthur:
-# arm, points = gandalf.attack()
-# print(gandalf, arm, points)
-# arthur.defend(arm, points)
-# print(arthur, arthur.current_life_point)
+merlin = Wizard("Merlin")
+
+
+#Attack 1 gandalf attack arthur:
+arm, points = gandalf.attack()
+print(gandalf, arm, points)
+legolas.defend(arm, points)
+print(legolas, legolas.current_life_point)
