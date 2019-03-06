@@ -6,9 +6,28 @@ class Perso:
     def __init__(self, name):
         self.current_life_point = self.max_life_point
         self.name = name
+        self._height = random.randrange(170, 190)
+        self._weight = random.randrange(70, 90)
 
     def __repr__(self):
         return "{} the {}. ".format(self.name, self.__class__.__name__)
+
+    def _get_height(self):
+        print(f"votre taille est {self._height} cm")
+        return self._height
+
+    def _get_weight(self):
+        print(f"Votre poids est {self._weight} kg")
+        return self._weight
+
+    def _set_height(self, height):
+        self._height = height
+
+    def _set_weight(self, weight):
+        self._weight = weight
+
+    height = property(_get_height, _set_height)
+    weight = property(_get_weight, _set_weight)
 
     def attack(self):
         magic_d = random.randrange(1, self.magic)
@@ -50,6 +69,10 @@ class Wizard(Perso):
         arm_2, attack_2 = super(Wizard, self).attack()
         attack_1 = random.randrange(1, self.magic)
         attack_point = max(attack_1, attack_2)
+        if arm_2 == "sword":
+            attack_2 += (self.weight + self.height)//40
+        elif arm_2 == "bow":
+            attack_2 += (self.height - 170) % 3
         if attack_point == attack_1:
             return "magic", attack_1
         else:
@@ -62,10 +85,15 @@ class Archer(Perso):
     bow = 12
     sword = 8
 
+
     def attack(self):
         arm, attack_point = super(Archer, self).attack()
         if arm == "bow" or arm == "magic":
             attack_point += 1
+        if arm == "sword":
+            attack_point += self.height//40
+        elif arm == "magic":
+            attack_point += self.weight//20
         return arm, attack_point
 
 
@@ -75,11 +103,25 @@ class Warrior(Perso):
     bow = 10
     sword = 12
 
+    def attack(self):
+        arm, attack_points = super(Warrior, self).attack()
+        if arm == "magic":
+            attack_points += self.weight//30
+        elif arm == "bow":
+            attack_points += (self.height - 170) % 3
+        return arm, attack_points
 
 
-# gandalf = Wizard("gandalf")
-# gimli = Warrior("gimli")
-#
+legolas = Archer("legolas")
+gimli = Warrior("gimli")
+gandalf = Wizard("Gandalf")
+agg = gandalf.attack()
+print(agg)
+
+
+p = gimli.attack()
+print(p)
+
 # arthur = Warrior("Arthur")
 # merlin = Wizard("Merlin")
 #
